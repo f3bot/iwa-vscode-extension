@@ -163,7 +163,9 @@ export async function processArchive(filename: string, projectPath: string): Pro
 */
 
 export async function installDependencies(projectPath: string): Promise<void> {
-    checkNpmInstalled();
+    if(!checkNpmInstalled()){
+      return;
+    }
 
     const projectName = path.basename(projectPath);
     const terminal = vscode.window.createTerminal({
@@ -272,7 +274,7 @@ async function createNewIWA() {
         if (!details) {
             return;
         }
-        
+
         const [projectName, projectIdentifier] = details;
 
         const projectPath = await createProjectPath(projectIdentifier);

@@ -6,11 +6,13 @@ export function changeWorkspace(path: string) {
     vscode.commands.executeCommand("vscode.openFolder", uri);
 }
 
-export function checkNpmInstalled() {
+export function checkNpmInstalled(): boolean {
     if (!shell.which("npm")) {
         vscode.window.showErrorMessage(
             "IWA Studio: This command requires npm. Install npm at https://www.npmjs.com/",
         );
-        return undefined;
+        return false;
     }
+
+    return true;
 }

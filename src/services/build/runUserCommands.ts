@@ -5,7 +5,9 @@ import { checkNpmInstalled } from "../global/helpers";
  * It checks for a valid workspace and npm installation.
  */
 function runNpmScript(scriptName: string, terminalName: string) {
-    checkNpmInstalled();
+    if(!checkNpmInstalled()){
+        return;
+    }
 
     const workspacePath = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
     if (!workspacePath) {
