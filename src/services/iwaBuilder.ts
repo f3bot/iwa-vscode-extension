@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import * as fs from "fs";
-import extract from "extract-zip"; // Import the library
+import extract from "extract-zip";
 import path from "path";
 import { pipeline } from "stream/promises";
 import { changeWorkspace, checkNpmInstalled } from "./global/helpers";
@@ -221,17 +221,17 @@ async function editManifestProperties(
     const packageJsonPath = path.join(projectPath, config.manifests.packageJson);
     const webManifestPath = path.join(projectPath, config.manifests.webManifest);
 
+    const manifestPaths = [packageJsonPath, webManifestPath];
     try {
-        const packageJsonData = await fs.promises.readFile(packageJsonPath, "utf-8");
-        const packageJson = JSON.parse(packageJsonData);
-        packageJson.name = projectIdentifier;
-        await fs.promises.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
 
-        const webManifestData = await fs.promises.readFile(webManifestPath, "utf-8");
-        const webManifest = JSON.parse(webManifestData);
-        webManifest.name = projectName;
-        webManifest.short_name = projectIdentifier;
-        await fs.promises.writeFile(webManifestPath, JSON.stringify(webManifest, null, 2));
+        for (const manifestPath of manifestPaths){
+          const JSONData = await fs.promises.readFile(manifestPath, "utf-8");
+          const packageJson = JSON.parse(JSONData);
+          packageJson.name = projectName;
+          packageJson.short_name = projectIdentifier;
+          await fs.promises.writeFile(manifestPath, JSON.stringify(packageJson, null, 2));
+        }
+
     } catch (error) {
         throw new Error(
             `Failed to update project manifest files. Ensure the template structure is correct.`,
@@ -271,7 +271,8 @@ async function createNewIWA() {
         const details = await getProjectDetails();
         if (!details) {
             return;
-        } //User cancelled
+        }
+        
         const [projectName, projectIdentifier] = details;
 
         const projectPath = await createProjectPath(projectIdentifier);

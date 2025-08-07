@@ -34,7 +34,7 @@ function runNpmScript(scriptName: string, terminalName: string) {
 function runDevServerCommand() {
     const devScriptName = vscode.workspace
         .getConfiguration("iwa-studio")
-        .get<string>("devServerScript", "dev");
+        .get<string>("devServerScript", "npm run dev");
 
     runNpmScript(devScriptName, `IWA Studio: ${devScriptName}`);
 }
@@ -42,16 +42,13 @@ function runDevServerCommand() {
 async function runBuildCommand() {
     const buildScriptName = vscode.workspace
         .getConfiguration("iwa-studio")
-        .get<string>("buildScript", "build");
+        .get<string>("buildScript", "npm run build");
 
     runNpmScript(buildScriptName, `IWA Studio: ${buildScriptName}`);
 }
 
 export function registerWorkflowCommands(context: vscode.ExtensionContext) {
-    const devServerDisposable = vscode.commands.registerCommand(
-        "iwa-studio.runDevServer",
-        runDevServerCommand,
-    );
+    const devServerDisposable = vscode.commands.registerCommand("iwa-studio.runDevServer", runDevServerCommand);
     const buildDisposable = vscode.commands.registerCommand("iwa-studio.runBuild", runBuildCommand);
 
     context.subscriptions.push(devServerDisposable, buildDisposable);

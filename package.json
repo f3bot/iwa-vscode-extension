@@ -31,12 +31,12 @@
             "properties": {
                 "iwa-studio.devServerScript": {
                     "type": "string",
-                    "default": "dev",
+                    "default": "npm run dev",
                     "description": "The name of the npm script to run the development server (e.g., 'npm run dev')."
                 },
                 "iwa-studio.buildScript": {
                     "type": "string",
-                    "default": "build",
+                    "default": "npm run build",
                     "description": "The name of the npm script to build the IWA for production. (e.g. 'npm run build')"
                 }
             }
