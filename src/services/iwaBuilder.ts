@@ -199,7 +199,7 @@ export async function installDependencies(projectPath: string): Promise<void> {
 }
 
 async function generateEnv(projectPath: string) {
-    const exists = await vscode.workspace.findFiles("**/*.gitignore, **/node_modules/**");
+    const exists = await vscode.workspace.findFiles("**/*.env, **/node_modules/**");
 
     if (exists.length > 0) {
         return;
