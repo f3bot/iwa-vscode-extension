@@ -88,7 +88,7 @@ export async function createProjectPath(projectIdentifier: string): Promise<stri
         canSelectFiles: false,
         canSelectFolders: true,
         canSelectMany: false,
-        title: "Select your project directory",
+        title: "Select parent directory",
         openLabel: "Select directory",
     });
 
