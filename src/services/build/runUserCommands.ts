@@ -15,13 +15,13 @@
  */
 
 import * as vscode from "vscode";
-import { checkNpmInstalled } from "../global/helpers";
+import { verifyNpmInstalled } from "../global/helpers";
 /**
  * A generic helper function to run an npm script in a dedicated terminal.
  * It checks for a valid workspace and npm installation.
  */
 function runNpmScript(scriptName: string, terminalName: string) {
-    if(!checkNpmInstalled()){
+    if(!verifyNpmInstalled()){
         return;
     }
 
@@ -33,18 +33,22 @@ function runNpmScript(scriptName: string, terminalName: string) {
         return;
     }
 
-    //If a previous terminal from this command is opened, reuse it
     const activeTerminals = vscode.window.terminals;
 
+    //If a previous terminal from this command is opened, reuse it
     for (const terminal of activeTerminals) {
         if (terminal.name === terminalName) {
             terminal.show();
-            terminal.sendText(scriptName);
+            terminal.sendText(`(cd "${workspacePath}" && ${scriptName})`);
             return;
         }
     }
 
-    const terminal = vscode.window.createTerminal(terminalName);
+    const terminal = vscode.window.createTerminal({
+        name: terminalName,
+        cwd: workspacePath, 
+    });
+
     terminal.show();
     terminal.sendText(scriptName);
 }
@@ -54,7 +58,7 @@ function runDevServerCommand() {
         .getConfiguration("iwa-studio")
         .get<string>("devServerScript", "npm run dev");
 
-    runNpmScript(devScriptName, `IWA Studio: ${devScriptName}`);
+    runNpmScript(devScriptName, `IWA Studio: Dev Script`);
 }
 
 async function runBuildCommand() {
@@ -62,7 +66,7 @@ async function runBuildCommand() {
         .getConfiguration("iwa-studio")
         .get<string>("buildScript", "npm run build");
 
-    runNpmScript(buildScriptName, `IWA Studio: ${buildScriptName}`);
+    runNpmScript(buildScriptName, `IWA Studio: Build Script`);
 }
 
 export function registerWorkflowCommands(context: vscode.ExtensionContext) {

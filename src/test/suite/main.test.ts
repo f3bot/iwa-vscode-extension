@@ -17,9 +17,9 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
 import * as sinon from "sinon";
-import { getProjectDetails } from "../../services/iwaBuilder";
+import { getProjectDetails } from "../../services/build/iwaBuilder";
 
-//Just a basic example, will add more tests later
+//This test is not supposed to be anything meaningful, it's just a basic test to verify that test runner is working.
 
 suite("IWA Builder Suite", () => {
     let sandbox: sinon.SinonSandbox;
@@ -38,13 +38,13 @@ suite("IWA Builder Suite", () => {
         const showInputBoxStub = sandbox.stub(vscode.window, "showInputBox");
 
         // Simulate user entering the project name first
-        showInputBoxStub.onFirstCall().resolves("My Awesome IWA");
+        showInputBoxStub.onFirstCall().resolves("IWA Project");
 
         // Simulate user entering the identifier second
-        showInputBoxStub.onSecondCall().resolves("my-awesome-iwa");
+        showInputBoxStub.onSecondCall().resolves("iwa-project");
 
         const result = await getProjectDetails();
 
-        assert.deepStrictEqual(result, ["My Awesome IWA", "my-awesome-iwa"]);
+        assert.deepStrictEqual(result, ["IWA Project", "iwa-project"]);
     });
 });

@@ -15,7 +15,7 @@
  */
 
 import * as vscode from "vscode";
-import { registerCreateNewCommand } from "./services/iwaBuilder";
+import { registerCreateNewCommand } from "./services/build/iwaBuilder";
 import { registerWorkflowCommands } from "./services/build/runUserCommands";
 
 export function activate(context: vscode.ExtensionContext) {

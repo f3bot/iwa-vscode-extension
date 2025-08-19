@@ -19,7 +19,7 @@ import * as fs from "fs";
 import extract from "extract-zip";
 import path from "path";
 import { pipeline } from "stream/promises";
-import { changeWorkspace, checkNpmInstalled } from "./global/helpers";
+import { changeWorkspace, verifyNpmInstalled } from "../global/helpers";
 
 const config = {
     bundlers: {
@@ -103,7 +103,7 @@ export async function createProjectPath(projectIdentifier: string): Promise<stri
 
     if (fs.existsSync(projectPath)) {
         vscode.window.showErrorMessage(
-            `IWA Studio: A folder named ${projectIdentifier} alerady exists under this path! Please try again!`,
+            `IWA Studio: A folder named ${projectIdentifier} already exists under this path! Please try again!`,
         );
         return;
     }
@@ -179,7 +179,7 @@ export async function processArchive(filename: string, projectPath: string): Pro
 */
 
 export async function installDependencies(projectPath: string): Promise<void> {
-    if(!checkNpmInstalled()){
+    if(!verifyNpmInstalled()){
       return;
     }
 
@@ -215,7 +215,7 @@ export async function installDependencies(projectPath: string): Promise<void> {
 }
 
 async function generateEnv(projectPath: string) {
-    const exists = await vscode.workspace.findFiles("**/*.env, **/node_modules/**");
+    const exists = await vscode.workspace.findFiles("**/*.env", "**/node_modules/**");
 
     if (exists.length > 0) {
         return;
