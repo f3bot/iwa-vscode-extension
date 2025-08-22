@@ -1,0 +1,82 @@
+{
+    "name": "iwa-studio",
+    "displayName": "IWA Studio",
+    "description": "",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.102.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [],
+    "main": "./dist/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "iwa-studio.createNew",
+                "title": "IWA Studio: Create new IWA"
+            },
+            {
+                "command": "iwa-studio.runDevServer",
+                "title": "IWA Studio: Run Dev Script"
+            },
+            {
+                "command": "iwa-studio.runBuild",
+                "title": "IWA Studio: Run Build Script"
+            }
+        ],
+        "configuration": {
+            "title": "IWA Studio",
+            "properties": {
+                "iwa-studio.devServerScript": {
+                    "type": "string",
+                    "default": "npm run dev",
+                    "description": "The name of the npm script to run the development server (e.g., 'npm run dev')."
+                },
+                "iwa-studio.buildScript": {
+                    "type": "string",
+                    "default": "npm run build",
+                    "description": "The name of the npm script to build the IWA for production. (e.g. 'npm run build')"
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run package",
+        "compile": "npm run check-types && npm run lint && node esbuild.js",
+        "watch": "npm-run-all -p watch:*",
+        "watch:esbuild": "node esbuild.js --watch",
+        "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+        "package": "npm run check-types && npm run lint && node esbuild.js --production",
+        "compile-tests": "tsc -p . --outDir out",
+        "watch-tests": "tsc -p . -w --outDir out",
+        "pretest": "npm run compile-tests && npm run compile && npm run lint",
+        "check-types": "tsc --noEmit",
+        "lint": "eslint src",
+        "test": "vscode-test"
+    },
+    "devDependencies": {
+        "@types/mocha": "^10.0.10",
+        "@types/node": "^20.19.9",
+        "@types/shelljs": "^0.8.17",
+        "@types/sinon": "^17.0.4",
+        "@types/vscode": "^1.102.0",
+        "@typescript-eslint/eslint-plugin": "^8.31.1",
+        "@typescript-eslint/parser": "^8.31.1",
+        "@vscode/test-cli": "^0.0.11",
+        "@vscode/test-electron": "^2.5.2",
+        "esbuild": "^0.25.3",
+        "eslint": "^9.25.1",
+        "fs": "^0.0.1-security",
+        "mocha": "^11.7.1",
+        "node-fetch": "^3.3.2",
+        "npm-run-all": "^4.1.5",
+        "sinon": "^21.0.0",
+        "typescript": "^5.8.3"
+    },
+    "dependencies": {
+        "extract-zip": "^2.0.1",
+        "shelljs": "^0.10.0"
+    }
+}
