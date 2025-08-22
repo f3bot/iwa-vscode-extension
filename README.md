@@ -14,11 +14,17 @@ IWA Studio is designed to give you a smooth, integrated experience for developin
 
 Access these commands from the VS Code Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`):
 
--   **IWA Studio: Start Development Server**: This command executes the script defined in the IWA Studio: Dev Server Script setting.
+- **IWA Studio: Start Development Server**: This command executes the script defined in the IWA
+  Studio: Dev Server Script setting.
 
--   **IWA Studio: Build IWA**: This command uses the script defined in the IWA Studio: Build Script setting.
+- **IWA Studio: Build IWA**: This command uses the script defined in the IWA Studio: Build Script
+  setting.
 
--   **IWA Studio: Create new IWA**: Scaffolds a new project by cloning a pre-built template from the official [GoogleChromeLabs/iwa-project-templates](https://github.com/GoogleChromeLabs/iwa-project-templates) repository. This gives you a ready-to-use foundation for your app.
+- **IWA Studio: Create new IWA**: Scaffolds a new project by cloning a pre-built template from the
+  official
+  [GoogleChromeLabs/iwa-project-templates](https://github.com/GoogleChromeLabs/iwa-project-templates)
+  repository. This gives you a ready-to-use foundation for your app.
+
 ## Extension Settings
 
 IWA Studio offers the following customizable settings:

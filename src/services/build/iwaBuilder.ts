@@ -164,7 +164,6 @@ export async function processArchive(filename: string, projectPath: string): Pro
         await extract(archivePath, { dir: projectPath });
 
         await fs.promises.unlink(archivePath);
-
     } catch (error) {
         throw new Error(`Failed to extract the archive: ${archivePath}`, {
             cause: error,
@@ -179,8 +178,8 @@ export async function processArchive(filename: string, projectPath: string): Pro
 */
 
 export async function installDependencies(projectPath: string): Promise<void> {
-    if(!verifyNpmInstalled()){
-      return;
+    if (!verifyNpmInstalled()) {
+        return;
     }
 
     const projectName = path.basename(projectPath);
@@ -241,15 +240,13 @@ async function editManifestProperties(
 
     const manifestPaths = [packageJsonPath, webManifestPath];
     try {
-
-        for (const manifestPath of manifestPaths){
-          const JSONData = await fs.promises.readFile(manifestPath, "utf-8");
-          const packageJson = JSON.parse(JSONData);
-          packageJson.name = projectName;
-          packageJson.short_name = projectIdentifier;
-          await fs.promises.writeFile(manifestPath, JSON.stringify(packageJson, null, 2));
+        for (const manifestPath of manifestPaths) {
+            const JSONData = await fs.promises.readFile(manifestPath, "utf-8");
+            const packageJson = JSON.parse(JSONData);
+            packageJson.name = projectName;
+            packageJson.short_name = projectIdentifier;
+            await fs.promises.writeFile(manifestPath, JSON.stringify(packageJson, null, 2));
         }
-
     } catch (error) {
         throw new Error(
             `Failed to update project manifest files. Ensure the template structure is correct.`,

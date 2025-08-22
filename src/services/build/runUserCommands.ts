@@ -21,7 +21,7 @@ import { verifyNpmInstalled } from "../global/helpers";
  * It checks for a valid workspace and npm installation.
  */
 function runNpmScript(scriptName: string, terminalName: string) {
-    if(!verifyNpmInstalled()){
+    if (!verifyNpmInstalled()) {
         return;
     }
 
@@ -46,7 +46,7 @@ function runNpmScript(scriptName: string, terminalName: string) {
 
     const terminal = vscode.window.createTerminal({
         name: terminalName,
-        cwd: workspacePath, 
+        cwd: workspacePath,
     });
 
     terminal.show();
@@ -70,7 +70,10 @@ async function runBuildCommand() {
 }
 
 export function registerWorkflowCommands(context: vscode.ExtensionContext) {
-    const devServerDisposable = vscode.commands.registerCommand("iwa-studio.runDevServer", runDevServerCommand);
+    const devServerDisposable = vscode.commands.registerCommand(
+        "iwa-studio.runDevServer",
+        runDevServerCommand,
+    );
     const buildDisposable = vscode.commands.registerCommand("iwa-studio.runBuild", runBuildCommand);
 
     context.subscriptions.push(devServerDisposable, buildDisposable);
