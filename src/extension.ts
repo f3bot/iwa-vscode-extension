@@ -17,10 +17,15 @@
 import * as vscode from "vscode";
 import { registerCreateNewCommand } from "./services/build/iwaBuilder";
 import { registerWorkflowCommands } from "./services/build/runUserCommands";
+import { KeyManagerController } from "./services/keyManagement/keyManagerController";
 
 export function activate(context: vscode.ExtensionContext) {
+    const keyManager = new KeyManagerController(context);
+    keyManager.registerCommands();
+
+
     registerCreateNewCommand(context); // createNewIwa()
-    registerWorkflowCommands(context); //npm run dev and build scripts
+    registerWorkflowCommands(context, keyManager); //npm run dev and build scripts
 }
 
 export function deactivate() {}

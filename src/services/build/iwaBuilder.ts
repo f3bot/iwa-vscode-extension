@@ -20,6 +20,7 @@ import extract from "extract-zip";
 import path from "path";
 import { pipeline } from "stream/promises";
 import { changeWorkspace, verifyNpmInstalled } from "../global/helpers";
+import { CONFIG_SECTION, CREATE_NEW_COMMAND } from "../global/constants";
 
 const config = {
     bundlers: {
@@ -214,17 +215,16 @@ export async function installDependencies(projectPath: string): Promise<void> {
 }
 
 async function generateEnv(projectPath: string) {
-    const exists = await vscode.workspace.findFiles("**/*.env", "**/node_modules/**");
+    const envPath = path.join(projectPath, ".env");
 
-    if (exists.length > 0) {
+    if (fs.existsSync(envPath)) {
         return;
     }
 
     const data = config.envData;
-    const envPath = vscode.Uri.parse(path.join(projectPath, ".env"));
 
     try {
-        await vscode.workspace.fs.writeFile(envPath, Buffer.from(data));
+        await fs.promises.writeFile(envPath, data);
     } catch (err) {
         throw new Error(`Failed to generate .env, error message: ${err}`);
     }
@@ -320,7 +320,7 @@ async function createNewIWA() {
 }
 
 export function registerCreateNewCommand(context: vscode.ExtensionContext) {
-    const disposable = vscode.commands.registerCommand("iwa-studio.createNew", async () => {
+    const disposable = vscode.commands.registerCommand(CREATE_NEW_COMMAND, async () => {
         await createNewIWA();
     });
 

@@ -25,12 +25,15 @@ Access these commands from the VS Code Command Palette (`Ctrl+Shift+P` or `Cmd+S
   [GoogleChromeLabs/iwa-project-templates](https://github.com/GoogleChromeLabs/iwa-project-templates)
   repository. This gives you a ready-to-use foundation for your app.
 
+- **IWA Studio: Generate Private Key**: This command either opens a template for creating a custom signing system or generates a passphrase-encrypted ed25519/p-256 private key.
+
 ## Extension Settings
 
 IWA Studio offers the following customizable settings:
 
 - `iwa-studio.devServerScript`: Modify your default npm development command (e.g., `npm run dev`).
 - `iwa-studio.buildScript`: Change your default npm build command (e.g., `npm run build`).
+- `iwa-studio.privateKeyName`: Default name of your private key, applies to workspace. (e.g., `encrypted_key.pem`)
 
 **Important:** If you customize your Dev Server Script or Build Script, remember to update these
 settings in IWA Studio to ensure the extension's commands function correctly.

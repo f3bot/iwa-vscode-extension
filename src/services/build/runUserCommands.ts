@@ -15,7 +15,9 @@
  */
 
 import * as vscode from "vscode";
-import { verifyNpmInstalled } from "../global/helpers";
+import { verifyNpmInstalled, checkWorkspaceOpened, checkPrivateKey } from "../global/helpers";
+import { BUILD_COMMAND, CONFIG_BUILD_COMMAND, CONFIG_DEV_COMMAND, CONFIG_SECTION, DEV_SERVER_COMMAND } from "../global/constants";
+import { KeyManagerController } from "../keyManagement/keyManagerController";
 /**
  * A generic helper function to run an npm script in a dedicated terminal.
  * It checks for a valid workspace and npm installation.
@@ -23,58 +25,65 @@ import { verifyNpmInstalled } from "../global/helpers";
 function runNpmScript(scriptName: string, terminalName: string) {
     if (!verifyNpmInstalled()) {
         return;
-    }
+    };
 
-    const workspacePath = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-    if (!workspacePath) {
-        vscode.window.showErrorMessage(
-            "No workspace detected. Please open your IWA project folder.",
-        );
-        return;
-    }
-
-    const activeTerminals = vscode.window.terminals;
+    const workspacePath = checkWorkspaceOpened();
+    if (workspacePath === undefined) {return;}
+    
 
     //If a previous terminal from this command is opened, reuse it
+    const activeTerminals = vscode.window.terminals;
+
     for (const terminal of activeTerminals) {
         if (terminal.name === terminalName) {
             terminal.show();
-            terminal.sendText(`(cd "${workspacePath}" && ${scriptName})`);
+            terminal.sendText(`(cd "${workspacePath.fsPath}" && ${scriptName})`);
             return;
         }
     }
 
     const terminal = vscode.window.createTerminal({
         name: terminalName,
-        cwd: workspacePath,
+        cwd: workspacePath.fsPath   ,
     });
-
     terminal.show();
     terminal.sendText(scriptName);
 }
 
 function runDevServerCommand() {
     const devScriptName = vscode.workspace
-        .getConfiguration("iwa-studio")
-        .get<string>("devServerScript", "npm run dev");
+        .getConfiguration(CONFIG_SECTION)
+        .get<string>(CONFIG_DEV_COMMAND, "npm run dev");
 
     runNpmScript(devScriptName, `IWA Studio: Dev Script`);
 }
 
-async function runBuildCommand() {
+async function runBuildCommand(keyManager: KeyManagerController) {
+    const proceed = await checkPrivateKey(keyManager);
+    if (!proceed) {
+        return;
+    }
+
     const buildScriptName = vscode.workspace
-        .getConfiguration("iwa-studio")
-        .get<string>("buildScript", "npm run build");
+        .getConfiguration(CONFIG_SECTION)
+        .get<string>(CONFIG_BUILD_COMMAND, "npm run build");
 
     runNpmScript(buildScriptName, `IWA Studio: Build Script`);
 }
 
-export function registerWorkflowCommands(context: vscode.ExtensionContext) {
+export function registerWorkflowCommands(
+    context: vscode.ExtensionContext,
+    keyManager: KeyManagerController
+) {
     const devServerDisposable = vscode.commands.registerCommand(
-        "iwa-studio.runDevServer",
-        runDevServerCommand,
+        DEV_SERVER_COMMAND,
+        runDevServerCommand
     );
-    const buildDisposable = vscode.commands.registerCommand("iwa-studio.runBuild", runBuildCommand);
+
+    const buildDisposable = vscode.commands.registerCommand(
+        BUILD_COMMAND,
+        () => runBuildCommand(keyManager)
+    );
 
     context.subscriptions.push(devServerDisposable, buildDisposable);
 }

@@ -24,6 +24,10 @@
             {
                 "command": "iwa-studio.runBuild",
                 "title": "IWA Studio: Run Build Script"
+            },
+            {
+                "command": "iwa-studio.generateKey",
+                "title": "IWA Studio: Generate private key"
             }
         ],
         "configuration": {
@@ -38,6 +42,11 @@
                     "type": "string",
                     "default": "npm run build",
                     "description": "The name of the npm script to build the IWA for production. (e.g. 'npm run build')"
+                },
+                "iwa-studio.privateKeyName": {
+                    "type": "string",
+                    "default": "encrypted_key.pem",
+                    "description": "The name of your encrypted key. A prompt asking if you want to update this field will be shown everytime you generate a private key."
                 }
             }
         }
