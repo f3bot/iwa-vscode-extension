@@ -26,6 +26,10 @@ export function activate(context: vscode.ExtensionContext) {
 
     registerCreateNewCommand(context); // createNewIwa()
     registerWorkflowCommands(context, keyManager); //npm run dev and build scripts
+
+    //This is done to access extensionContext in tests.
+    //https://github.com/microsoft/vscode/blob/main/extensions/vscode-api-tests/src/singlefolder-tests/state.test.ts
+    (global as any).ExtensionContext = context;
 }
 
 export function deactivate() {}

@@ -1,4 +1,5 @@
 {
+    "publisher": "Google",
     "name": "iwa-studio",
     "displayName": "IWA Studio",
     "description": "",
@@ -63,7 +64,7 @@
         "pretest": "npm run compile-tests && npm run compile && npm run lint",
         "check-types": "tsc --noEmit",
         "lint": "eslint src",
-        "test": "vscode-test"
+        "test": "xvfb-run -a vscode-test"
     },
     "devDependencies": {
         "@types/mocha": "^10.0.10",
@@ -82,7 +83,8 @@
         "node-fetch": "^3.3.2",
         "npm-run-all": "^4.1.5",
         "sinon": "^21.0.0",
-        "typescript": "^5.8.3"
+        "typescript": "^5.8.3",
+        "xvfb": "^0.4.0"
     },
     "dependencies": {
         "extract-zip": "^2.0.1",

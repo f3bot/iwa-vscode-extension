@@ -46,7 +46,7 @@ export class VSCodeInteractionService {
         vscode.window.showWarningMessage(`IWA Studio: ${message}`);
     }
 
-    private fileExists(filePath: string): boolean {
+    public fileExists(filePath: string): boolean {
         return existsSync(filePath);
     }
 

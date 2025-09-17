@@ -141,7 +141,7 @@ export class KeyManagerController {
         }
     }
 
-    private async openKeyIntegrationTemplate(): Promise<void> {
+    public async openKeyIntegrationTemplate(): Promise<void> {
         try {
             const templatePath = path.join(
                 this.context.extensionPath,
