@@ -22,7 +22,7 @@ import { pipeline } from "stream/promises";
 import { changeWorkspace, verifyNpmInstalled } from "../global/helpers";
 import { CONFIG_SECTION, CREATE_NEW_COMMAND } from "../global/constants";
 
-const config = {
+export const config = {
     bundlers: {
         Vite: {
             url: "https://github.com/GoogleChromeLabs/iwa-project-templates/releases/latest/download/vite-template.zip",
@@ -122,7 +122,7 @@ export async function selectBundler(): Promise<string | undefined> {
         canPickMany: false,
     });
 
-    if (!result) {
+    if (result === undefined) {
         vscode.window.showErrorMessage("IWA Studio: Bundler selection is required.");
         return undefined;
     }
@@ -135,7 +135,7 @@ export async function fetchArchive(
     destinationDirectory: string,
 ): Promise<string | undefined> {
     const bundlerConfig = config.bundlers[bundlerChoice as keyof typeof config.bundlers];
-    if (!bundlerConfig) {
+    if (bundlerConfig === undefined) {
         vscode.window.showErrorMessage(`IWA Studio: Invalid bundler choice: ${bundlerChoice}`);
         return undefined;
     }
@@ -194,10 +194,9 @@ export async function installDependencies(projectPath: string): Promise<void> {
     return new Promise((resolve, reject) => {
         const disposeToken = vscode.window.onDidCloseTerminal((closedTerminal) => {
             if (closedTerminal === terminal) {
-                disposeToken.dispose();
-
                 if (terminal.exitStatus?.code === 0) {
                     resolve();
+                    disposeToken.dispose();
                 } else {
                     const exitCode = terminal.exitStatus?.code ?? "unknown";
                     vscode.window.showErrorMessage(
@@ -214,7 +213,7 @@ export async function installDependencies(projectPath: string): Promise<void> {
     });
 }
 
-async function generateEnv(projectPath: string) {
+export async function generateEnv(projectPath: string) {
     const envPath = path.join(projectPath, ".env");
 
     if (fs.existsSync(envPath)) {
@@ -230,7 +229,7 @@ async function generateEnv(projectPath: string) {
     }
 }
 
-async function editManifestProperties(
+export async function editManifestProperties(
     projectPath: string,
     projectName: string,
     projectIdentifier: string,
@@ -281,27 +280,27 @@ export async function offerWorkspaceChange(path: string): Promise<void> {
   8.Edit manifest name, short_name
   9.Offer workspace change
 */
-async function createNewIWA() {
+export async function createNewIWA() {
     try {
         const details = await getProjectDetails();
-        if (!details) {
+        if (details === undefined) {
             return;
         }
 
         const [projectName, projectIdentifier] = details;
 
         const projectPath = await createProjectPath(projectIdentifier);
-        if (!projectPath) {
+        if (projectPath === undefined) {
             return;
         }
 
         const bundlerChoice = await selectBundler();
-        if (!bundlerChoice) {
+        if (bundlerChoice === undefined) {
             return;
         }
 
         const archive_filename = await fetchArchive(bundlerChoice, projectPath);
-        if (!archive_filename) {
+        if (archive_filename === undefined) {
             return;
         }
 

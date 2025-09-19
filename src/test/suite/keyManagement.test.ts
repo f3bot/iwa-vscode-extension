@@ -22,6 +22,7 @@ import * as vscode from "vscode";
 import * as sinon from "sinon";
 import * as fs from "fs";
 import * as path from "path";
+import * as os from 'os';
 import * as helpers from '../../services/global/helpers';
 
 
@@ -47,11 +48,13 @@ suite("Key management suite", async () => {
         keyGenService = new KeyGenerationService();
         keyManagerController = new KeyManagerController(extensionContext);
         keyManagerInteractionService = new VSCodeInteractionService();
-        tempDir = path.join(process.cwd(), "iwa-studio-tests-temp");
+        const tempDirPrefix = 'keyManagement-test';
+        tempDir = path.join(os.tmpdir(), "iwa-studio-tests-temp", tempDirPrefix);
         tempUri = vscode.Uri.file(tempDir);
-        if (!fs.existsSync(tempDir)) {
-            fs.mkdirSync(tempDir);
+        if (fs.existsSync(tempDir)) {
+            fs.rmSync(tempDir, { recursive: true, force: true });
         }
+        fs.mkdirSync(tempDir, { recursive: true });
     });
 
     teardown(async () => {
