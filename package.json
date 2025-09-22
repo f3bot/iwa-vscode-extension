@@ -13,6 +13,23 @@
     "activationEvents": [],
     "main": "./dist/extension.js",
     "contributes": {
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "iwa-studio-container",
+                    "title": "IWA Studio Dashboard",
+                    "icon": "src/assets/dashboard_icon.svg"
+                }
+            ]
+        },
+        "views": {
+            "iwa-studio-container": [
+                {
+                    "id": "iwa-studio-dev_dashboard",
+                    "type": "tree"
+                }
+            ]        
+        },
         "commands": [
             {
                 "command": "iwa-studio.createNew",

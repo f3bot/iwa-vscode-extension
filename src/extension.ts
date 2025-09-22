@@ -18,6 +18,7 @@ import * as vscode from "vscode";
 import { registerCreateNewCommand } from "./services/build/iwaBuilder";
 import { registerWorkflowCommands } from "./services/build/runUserCommands";
 import { KeyManagerController } from "./services/keyManagement/keyManagerController";
+import { createDashboard } from "./services/dashboardProvider/dashboardProvider";
 
 export function activate(context: vscode.ExtensionContext) {
     const keyManager = new KeyManagerController(context);
@@ -30,6 +31,8 @@ export function activate(context: vscode.ExtensionContext) {
     //This is done to access extensionContext in tests.
     //https://github.com/microsoft/vscode/blob/main/extensions/vscode-api-tests/src/singlefolder-tests/state.test.ts
     (global as any).ExtensionContext = context;
+
+    createDashboard();
 }
 
 export function deactivate() {}
