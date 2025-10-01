@@ -17,7 +17,7 @@
             "activitybar": [
                 {
                     "id": "iwa-studio-container",
-                    "title": "IWA Studio Dashboard",
+                    "title": "IWA Studio",
                     "icon": "src/assets/dashboard_icon.svg"
                 }
             ]
@@ -26,6 +26,7 @@
             "iwa-studio-container": [
                 {
                     "id": "iwa-studio-dev_dashboard",
+                    "name": "Developer Dashboard",
                     "type": "tree"
                 }
             ]        
@@ -45,7 +46,11 @@
             },
             {
                 "command": "iwa-studio.generateKey",
-                "title": "IWA Studio: Generate private key"
+                "title": "IWA Studio: Generate Private Key"
+            },
+            {
+                "command": "iwa-studio.openBundleExplorer",
+                "title": "IWA Studio: Open Bundle Explorer"
             }
         ],
         "configuration": {

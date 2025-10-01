@@ -21,6 +21,7 @@ import {
     DASHBOARD_VIEW_ID,
     DEV_SERVER_COMMAND,
     GENERATE_KEY_COMMAND,
+    OPEN_EXPLORER_COMMAND,
 } from "../global/constants";
 
 enum CATEGORY {
@@ -68,6 +69,13 @@ const DASHBOARD_ITEMS = [
         description: "Generate an encrypted ed-25519/p-256 key",
         icon: "key",
         commandId: GENERATE_KEY_COMMAND,
+    },
+    {
+        category: CATEGORY.TOOLS,
+        label: "Open Explorer",
+        description: "Open Bundle Explorer",
+        icon: "eye",
+        commandId: OPEN_EXPLORER_COMMAND,
     },
 ];
 
