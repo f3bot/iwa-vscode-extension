@@ -37,3 +37,8 @@ IWA Studio offers the following customizable settings:
 
 **Important:** If you customize your Dev Server Script or Build Script, remember to update these
 settings in IWA Studio to ensure the extension's commands function correctly.
+
+___
+This is not an officially supported Google product. This project is not
+eligible for the [Google Open Source Software Vulnerability Rewards
+Program](https://bughunters.google.com/open-source-security).
