@@ -21,12 +21,15 @@ import {
     DASHBOARD_VIEW_ID,
     DEV_SERVER_COMMAND,
     GENERATE_KEY_COMMAND,
+    INSTALL_LOCAL_COMMAND,
+    INSTALL_REMOTE_COMMAND,
     OPEN_EXPLORER_COMMAND,
 } from "../global/constants";
 
 enum CATEGORY {
     PROJECT = "Project",
     TOOLS = "Tools",
+    INSTALLATION = "Installation"
 }
 
 class DashboardTreeItem extends vscode.TreeItem {
@@ -76,6 +79,20 @@ const DASHBOARD_ITEMS = [
         description: "Open Bundle Explorer",
         icon: "eye",
         commandId: OPEN_EXPLORER_COMMAND,
+    },
+    {
+        category: CATEGORY.INSTALLATION,
+        label: "Install IWA Locally",
+        description: "",
+        icon: "beaker",
+        commandId: INSTALL_LOCAL_COMMAND,
+    },
+    {
+        category: CATEGORY.INSTALLATION,
+        label: "Install IWA Remotely",
+        description: "",
+        icon: "remote",
+        commandId: INSTALL_REMOTE_COMMAND,
     },
 ];
 

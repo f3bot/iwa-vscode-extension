@@ -118,6 +118,7 @@ suite("IWA Builder Suite", () => {
         mockBody.push(null); // Signals the end of the stream
         const mockResponse = {
             ok: true,
+            arrayBuffer: async () => new ArrayBuffer(0),
             body: mockBody,
         };
         const fetchStub = sandbox.stub(global, "fetch").resolves(mockResponse as any);

@@ -20,6 +20,7 @@ import { registerWorkflowCommands } from "./services/build/runUserCommands";
 import { KeyManagerController } from "./services/keyManagement/keyManagerController";
 import { createDashboard } from "./services/dashboardProvider/dashboardProvider";
 import { explorerService } from "./services/bundleExplorer/explorerService";
+import { InstallerController } from "./services/iwaInstaller/installerController";
 
 export function activate(context: vscode.ExtensionContext) {
     const keyManager = new KeyManagerController(context);
@@ -28,7 +29,8 @@ export function activate(context: vscode.ExtensionContext) {
     const bundleExplorer = new explorerService(context);
     bundleExplorer.registerCommands();
 
-
+    const installerController = new InstallerController(context);
+    installerController.registerCommands();
 
     registerCreateNewCommand(context); // createNewIwa()
     registerWorkflowCommands(context, keyManager); //npm run dev and build scripts

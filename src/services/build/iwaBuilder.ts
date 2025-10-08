@@ -18,7 +18,6 @@ import * as vscode from "vscode";
 import * as fs from "fs";
 import extract from "extract-zip";
 import path from "path";
-import { pipeline } from "stream/promises";
 import { changeWorkspace, verifyNpmInstalled } from "../global/helpers";
 import { CONFIG_SECTION, CREATE_NEW_COMMAND } from "../global/constants";
 
@@ -145,12 +144,13 @@ export async function fetchArchive(
 
     try {
         const response = await fetch(url);
-        if (!response.ok || !response.body) {
+        if (!response.ok) {
             throw new Error(
                 `Failed to download template from ${url}. Status: ${response.status} ${response.statusText}`,
             );
         }
-        await pipeline(response.body, fs.createWriteStream(filePath));
+        const buffer = Buffer.from(await response.arrayBuffer());
+        await fs.promises.writeFile(filePath, buffer);
     } catch (error) {
         throw new Error(`Failed to download template archive.`, { cause: error });
     }

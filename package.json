@@ -29,7 +29,7 @@
                     "name": "Developer Dashboard",
                     "type": "tree"
                 }
-            ]        
+            ]
         },
         "commands": [
             {
@@ -51,6 +51,14 @@
             {
                 "command": "iwa-studio.openBundleExplorer",
                 "title": "IWA Studio: Open Bundle Explorer"
+            },
+            {
+                "command": "iwa-studio.installIwaLocally",
+                "title": "IWA Studio: Launch Chrome and install IWA"
+            },
+            {
+                "command": "iwa-studio.installIwaRemotely",
+                "title": "IWA Studio: Connect to Chrome and install IWA"
             }
         ],
         "configuration": {
@@ -70,6 +78,23 @@
                     "type": "string",
                     "default": "encrypted_key.pem",
                     "description": "The name of your encrypted key. A prompt asking if you want to update this field will be shown everytime you generate a private key."
+                },
+                "iwa-studio.devServerAddress": {
+                    "type": "string",
+                    "description": "Enter the adress to your localhost development server"
+                },
+                "iwa-studio.chromeRemoteServerAddress": {
+                    "type": "string",
+                    "description": "Address to your remote Chrome debugging server (for remote installation)"
+                },
+                "iwa-studio.httpServerAddress": {
+                    "type": "number",
+                    "description": "Address for the local HTTP server that hosts the Signed Web Bundle (for remote installation)"
+                },
+                "iwa-studio.chromeLaunchArguments": {
+                    "type": "string",
+                    "default": "--enable-features=IsolatedWebApps,IsolatedWebAppDevMode",
+                    "description": "Set your own custom chrome launch arguments here. Use a semicolon (;) to separate multiple arguments. (Note: IsolatedWebApps and IsolatedWebAppsDevMode have to stay here)"
                 }
             }
         }
@@ -109,7 +134,10 @@
         "xvfb": "^0.4.0"
     },
     "dependencies": {
+        "@puppeteer/browsers": "^2.10.10",
         "extract-zip": "^2.0.1",
-        "shelljs": "^0.10.0"
+        "puppeteer-core": "^24.22.3",
+        "shelljs": "^0.10.0",
+        "wbn-sign": "^0.2.4"
     }
 }
