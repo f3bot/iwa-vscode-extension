@@ -19,7 +19,8 @@ import * as path from "path";
 import * as vscode from "vscode";
 import * as shell from "shelljs";
 import { KeyManagerController } from "../keyManagement/keyManagerController";
-import { CONFIG_KEY_PRIVATE_KEY, CONFIG_SECTION } from "./constants";
+import { CONFIG_KEY_PRIVATE_KEY, CONFIG_SECTION, GET_BUNDLE_ID_COMMAND } from "./constants";
+import { getBundleId } from "wbn-sign";
 
 export function changeWorkspace(path: string) {
     let uri = vscode.Uri.file(path);
@@ -84,4 +85,20 @@ export async function checkPrivateKey(keyManager: KeyManagerController): Promise
     const proceedWithBuild = await keyManager.resolveSigningKey();
     return proceedWithBuild;
   }
+}
+
+async function getBundleIdFromFile(file : vscode.Uri){
+  const fileContents = await fs.promises.readFile(file.fsPath);
+  const bundleID = getBundleId(fileContents);
+
+  vscode.window.showInformationMessage(`IWA Studio: Bundle ID copied to clipboard! \n isolated-app://${bundleID}`);
+  vscode.env.clipboard.writeText(`isolated-app://${bundleID}`);
+};
+
+export function registerGetBundleIDCommand(context: vscode.ExtensionContext){
+  const bundleIdDisposable = vscode.commands.registerCommand(GET_BUNDLE_ID_COMMAND, (file: vscode.Uri) =>{
+    getBundleIdFromFile(file);
+  });
+
+  context.subscriptions.push(bundleIdDisposable);
 }

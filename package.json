@@ -59,8 +59,27 @@
             {
                 "command": "iwa-studio.installIwaRemotely",
                 "title": "IWA Studio: Connect to Chrome and install IWA"
+            },
+            {
+                "command": "iwa-studio.getBundleID",
+                "title": "IWA Studio: Extract IWA Origin From File"
             }
         ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "command": "iwa-studio.getBundleID",
+                    "group": "navigation",
+                    "when": "resourceExtname === .swbn"
+                }
+            ],
+            "commandPalette": [
+                {
+                    "command": "iwa-studio.getBundleID",
+                    "when": "false"
+                }
+            ]
+        },
         "configuration": {
             "title": "IWA Studio",
             "properties": {

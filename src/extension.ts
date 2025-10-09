@@ -21,6 +21,7 @@ import { KeyManagerController } from "./services/keyManagement/keyManagerControl
 import { createDashboard } from "./services/dashboardProvider/dashboardProvider";
 import { explorerService } from "./services/bundleExplorer/explorerService";
 import { InstallerController } from "./services/iwaInstaller/installerController";
+import { registerGetBundleIDCommand } from "./services/global/helpers";
 
 export function activate(context: vscode.ExtensionContext) {
     const keyManager = new KeyManagerController(context);
@@ -34,7 +35,8 @@ export function activate(context: vscode.ExtensionContext) {
 
     registerCreateNewCommand(context); // createNewIwa()
     registerWorkflowCommands(context, keyManager); //npm run dev and build scripts
-
+    registerGetBundleIDCommand(context);
+    
     //This is done to access extensionContext in tests.
     //https://github.com/microsoft/vscode/blob/main/extensions/vscode-api-tests/src/singlefolder-tests/state.test.ts
     (global as any).ExtensionContext = context;

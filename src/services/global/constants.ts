@@ -25,6 +25,7 @@ export const GENERATE_KEY_COMMAND = packageJson.contributes.commands[3].command;
 export const OPEN_EXPLORER_COMMAND = packageJson.contributes.commands[4].command;
 export const INSTALL_LOCAL_COMMAND = packageJson.contributes.commands[5].command;
 export const INSTALL_REMOTE_COMMAND = packageJson.contributes.commands[6].command;
+export const GET_BUNDLE_ID_COMMAND = packageJson.contributes.commands[7].command;
 export const DASHBOARD_VIEW_ID = packageJson.contributes.views["iwa-studio-container"][0].id;
 
 //Cant really extract the keys, so these have to stay hardcoded
