@@ -256,23 +256,37 @@ suite("Key management suite", async () => {
 
         assert.strictEqual(fileExists, true, "Private key file was not saved");
     });
+    test("updateEnvConfiguration should update .env fields", async () => {
+        const envContent = [
+            "PRIVATE_KEY_PATH=key.pem",
+            "PRIVATE_KEY_PASSWORD=password"
+        ].join("\n");
 
-    test("updateEnvConfiguration should update .env fields", async() =>{
-        const envContent = 
-        `
-            PRIVATE_KEY_PATH=key.pem
-            PRIVATE_KEY_PASSWORD=password
-        `;
-        const envPath = vscode.Uri.joinPath(tempUri, '.env');
-        
-        await vscode.workspace.fs.writeFile(envPath, Buffer.from(envContent));
-        const checkWorkspaceOpenedStub = sandbox.stub(helpers, 'checkWorkspaceOpened').returns(tempUri);
-        const showQuickPickStub = sandbox.stub(vscode.window, 'showQuickPick').resolves(true as any);
-        await keyManagerController.updateEnvConfiguration('test-key.pem', 'test-password');
+        const expectedEnv = [
+            "PRIVATE_KEY_PATH=test-key.pem",
+            "PRIVATE_KEY_PASSWORD=test-password"
+        ].join("\n");
+
+        const envPath = vscode.Uri.joinPath(tempUri, ".env");
+
+        await vscode.workspace.fs.writeFile(envPath, Buffer.from(envContent + "\n"));
+
+        sandbox.stub(helpers, "checkWorkspaceOpened").returns(tempUri);
+        sandbox
+            .stub(keyManagerController["interactionService"], "offerToUpdateEnv")
+            .resolves(true);
+
+        await keyManagerController.updateEnvConfiguration(
+            "test-key.pem",
+            "test-password"
+        );
+
+        const updatedEnvContent = (await vscode.workspace.fs.readFile(envPath))
+            .toString()
+            .trim();
+
+        assert.strictEqual(updatedEnvContent, expectedEnv);
+    });
 
 
-        const updatedEnvContent = await vscode.workspace.fs.readFile(envPath);
-
-        assert.strictEqual(updatedEnvContent.toString(), envContent);
-    }); 
 });
