@@ -256,6 +256,7 @@ suite("Key management suite", async () => {
 
         assert.strictEqual(fileExists, true, "Private key file was not saved");
     });
+
     test("updateEnvConfiguration should update .env fields", async () => {
         const envContent = [
             "PRIVATE_KEY_PATH=key.pem",
@@ -287,6 +288,4 @@ suite("Key management suite", async () => {
 
         assert.strictEqual(updatedEnvContent, expectedEnv);
     });
-
-
 });
