@@ -59,6 +59,7 @@ export class KeyManagerController {
 
             await this.addPemToGitIgnore();
             await this.updateKeyConfigurationIfNeeded(keyFilename);
+            await this.updateEnvConfiguration(keyFilename, password);
 
         } catch (err) {
             this.interactionService.showError(`Failed to generate or save private key: ${err}`);
@@ -73,6 +74,42 @@ export class KeyManagerController {
 
         if(await this.interactionService.askToUpdateDefaultKey()){
             await this.updateKeyConfiguration(keyFilename);
+        }
+    }
+
+    public async updateEnvConfiguration(keyFilename: string, keyPassword: string) {
+        if (await this.interactionService.offerToUpdateEnv()) {
+            const workspacePath = checkWorkspaceOpened();
+            if (!workspacePath) {
+                this.interactionService.showError("No workspace opened!");
+                return;
+            }
+
+            const envPath = vscode.Uri.joinPath(workspacePath, '.env');
+
+            try {
+                const envContent = await vscode.workspace.fs.readFile(envPath);
+                let envText = Buffer.from(envContent).toString("utf-8");
+
+                const updateKey = (text: string, key: string, value: string): string => {
+                    const regex = new RegExp(`^${key}=.*$`, "m");
+                    if (regex.test(text)) {
+                        return text.replace(regex, `${key}=${value}`);
+                    }
+                    return text + `\n${key}=${value}`;
+                };
+
+                envText = updateKey(envText, "PRIVATE_KEY_PATH", keyFilename);
+                envText = updateKey(envText, "PRIVATE_KEY_PASSWORD", keyPassword);
+
+                await vscode.workspace.fs.writeFile(envPath, Buffer.from(envText, "utf-8"));
+
+                this.interactionService.showInfo("Updated PRIVATE_KEY_PATH and PRIVATE_KEY_PASSWORD in .env");
+
+            } catch (err) {
+                console.error(err);
+                this.interactionService.showError("Could not update .env");
+            }
         }
     }
 

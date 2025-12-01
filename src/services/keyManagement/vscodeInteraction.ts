@@ -153,6 +153,18 @@ export class VSCodeInteractionService {
         return result === this.UI_CHOICE_YES;
     }
 
+    public async offerToUpdateEnv(): Promise<boolean> {
+        const result = await vscode.window.showQuickPick(
+            [this.UI_CHOICE_YES, this.UI_CHOICE_NO],
+            {
+                title: "Update .env key configuration?",
+                placeHolder: "This will update PRIVATE_KEY_PATH and PRIVATE_KEY_PASSWORD"
+            }
+        );
+
+        return result === this.UI_CHOICE_YES;
+    }
+
     public async offerInitialKeyGenerationChoice(): Promise<KeyGenerationChoice> {
         const choices = {
             generate: "Generate private key",
