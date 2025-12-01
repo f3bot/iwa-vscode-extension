@@ -95,7 +95,7 @@ export class KeyManagerController {
                     if (regex.test(text)) {
                         return text.replace(regex, `${key}=${value}`);
                     }
-                    return text + `\n${key}=${value}`;
+                    return text;
                 };
 
                 envText = updateKey(envText, "PRIVATE_KEY_PATH", keyFilename);
