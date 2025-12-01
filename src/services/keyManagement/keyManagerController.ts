@@ -80,8 +80,7 @@ export class KeyManagerController {
     public async updateEnvConfiguration(keyFilename: string, keyPassword: string) {
         if (await this.interactionService.offerToUpdateEnv()) {
             const workspacePath = checkWorkspaceOpened();
-            if (!workspacePath) {
-                this.interactionService.showError("No workspace opened!");
+            if (workspacePath === undefined) {
                 return;
             }
 
