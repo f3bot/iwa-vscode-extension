@@ -106,8 +106,7 @@ export class KeyManagerController {
                 this.interactionService.showInfo("Updated PRIVATE_KEY_PATH and PRIVATE_KEY_PASSWORD in .env");
 
             } catch (err) {
-                console.error(err);
-                this.interactionService.showError("Could not update .env");
+                this.interactionService.showError(`Could not update .env, cause: ${err}`);
             }
         }
     }
